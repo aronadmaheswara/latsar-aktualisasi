@@ -1,0 +1,163 @@
+{
+  "name": "kredensial",
+  "nodes": [
+    {
+      "parameters": {
+        "content": "## Credential\nMelakukan pendaftaran kredensial pada beberapa tools yang akan digunakan"
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "position": [
+        -528,
+        48
+      ],
+      "typeVersion": 1,
+      "id": "6bd7a53b-e25c-4028-999c-022805ef9854",
+      "name": "Sticky Note"
+    },
+    {
+      "parameters": {
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.chatTrigger",
+      "typeVersion": 1.3,
+      "position": [
+        -448,
+        304
+      ],
+      "id": "b1073faf-c5e4-4d12-a5e3-8f57531b9921",
+      "name": "When chat message received",
+      "webhookId": "52ca43b2-6b4d-46ac-90d2-50a28bbf7016"
+    },
+    {
+      "parameters": {
+        "operation": "send",
+        "additionalFields": {}
+      },
+      "type": "n8n-nodes-base.whatsApp",
+      "typeVersion": 1,
+      "position": [
+        -240,
+        304
+      ],
+      "id": "76a18f54-5de7-4f55-8b9d-932b4f2972a8",
+      "name": "Send message",
+      "webhookId": "bd3a8397-e1b8-405f-ae22-a62e54e26e4c"
+    },
+    {
+      "parameters": {
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.lmChatGoogleGemini",
+      "typeVersion": 1,
+      "position": [
+        448,
+        320
+      ],
+      "id": "c780efc7-714b-4732-bec2-6926a6915794",
+      "name": "Google Gemini Chat Model",
+      "credentials": {
+        "googlePalmApi": {
+          "id": "5ydbYGFY5j0n4dg7",
+          "name": "Google Gemini(PaLM) Api account 2"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "documentId": {
+          "__rl": true,
+          "mode": "list",
+          "value": ""
+        },
+        "sheetName": {
+          "__rl": true,
+          "mode": "list",
+          "value": ""
+        }
+      },
+      "type": "n8n-nodes-base.googleSheets",
+      "typeVersion": 4.7,
+      "position": [
+        0,
+        304
+      ],
+      "id": "c88023cd-d19a-4b56-b3c8-0200e7f994bd",
+      "name": "Get row(s) in sheet",
+      "credentials": {
+        "googleSheetsOAuth2Api": {
+          "id": "GdieftyHuO99v4zi",
+          "name": "Google Sheets account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "resource": "folder",
+        "driveId": {
+          "__rl": true,
+          "mode": "list",
+          "value": "My Drive"
+        },
+        "folderId": {
+          "__rl": true,
+          "mode": "list",
+          "value": "root",
+          "cachedResultName": "/ (Root folder)"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.googleDrive",
+      "typeVersion": 3,
+      "position": [
+        208,
+        304
+      ],
+      "id": "cabba5a9-7a9c-4db9-acde-43e0690fcbda",
+      "name": "Create folder",
+      "credentials": {
+        "googleDriveOAuth2Api": {
+          "id": "232mPue4Lh44OuKM",
+          "name": "Google Drive account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "content": "## Beberapa tools yang akan digunakan",
+        "height": 240,
+        "width": 1152
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "position": [
+        -544,
+        224
+      ],
+      "typeVersion": 1,
+      "id": "a9e978b9-4516-4e73-892f-7a24ec70e6da",
+      "name": "Sticky Note1"
+    }
+  ],
+  "pinData": {},
+  "connections": {
+    "When chat message received": {
+      "main": [
+        []
+      ]
+    },
+    "Get row(s) in sheet": {
+      "main": [
+        []
+      ]
+    }
+  },
+  "active": false,
+  "settings": {
+    "executionOrder": "v1"
+  },
+  "versionId": "c529ff0e-4b58-4d1e-a40a-f0c25c84d8d1",
+  "meta": {
+    "instanceId": "805d76a5a0dfbaf1f21de894fa42462268a5a19856d64e2bcfa697888606a1e3"
+  },
+  "id": "RLiPLWCPRBRRq2Kf",
+  "tags": []
+}
