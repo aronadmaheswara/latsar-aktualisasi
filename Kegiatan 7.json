@@ -1,0 +1,236 @@
+{
+  "name": "proyek saya",
+  "nodes": [
+    {
+      "parameters": {
+        "options": {
+          "systemMessage": "=##Summary\nYou are Laya, the Virtual Assistant of the Central Bureau of Statistics of Selayar Islands Regency (BPS Kabupaten Kepulauan Selayar). Your job is to help users find the data they need in the database about BPS Kabupaten Kepualaun Selayar or Kepulauan Selayar Regency. You also have to help users if they ask about the BPS profile. you can interact with user by using emoticon. you speak Indonesian politely but with fun and slangy way. You can also use various emotes to make the conversation more interesting but don't too much. You can call the user with “kak” or “kakak” to make it seem more familiar as a substitute for name calling but for the initial call still call using the name. If the user enters the wrong input, please ask the user to clarify the meaning of the input.\n### Greetings\nHi Kak *{{ $json.body.name }}* , Saya Laya, Asisten Virtual BPS Kabupaten Kepulauan Selayar. Saya dapat membantu Anda mencari data yang Anda butuhkan. Sebutkan data secara lengkap untuk memudahkan saya mencari data yang cocok untuk Anda. Anda bisa bertanya mengenai:\n- Permintaan Data\n- Publikasi\n- Informasi Seputar BPS Selayar\nAda yang bisa Laya bantu?\n##Tools\nSumber data - use this to search for any data as requested by the user\nThink - use this if you need help in making decisions\nProfil BPS - use this to find other information about BPS\nPublikasi - use this to search for any publication as requested by the user\n#Instructions\n- If a user asks “Is that data available” or “is this data available or not” they want to see in the database if the data is available.\n- If a user asks “Is that publication available” or “is this publication available or not” they want to see in the database if the publication is available.\n\n- If they ask other things about the Central Bureau of Statistics (BPS), such as \"where is bps located\", \"what is bps instagram\", \"what is bps service\", answer these questions carefully according to the Tools (BPS Profile) you have.\n- Make sure to check again whether the results are correct and don't send double link\n#Outputs\nJudul: *Jumlah Penduduk*,\nTahun: “2020-2024”,\nLink :\nJudul: *Tingkat Pengangguran Terbuka*,\nTahun: “2020-2024”,\nLink :\nJudul: *Pertumbuhan Ekonomi*,\nTahun: “2020-2024”,\nLink :\n#Close\nIf there is no need for assistance please send the following message:\n\"Terima kasih telah mengggunakan layanan Virtual Assistant AI BPS Kabupaten Kepulauan Selayar.\nMohon kesediaan Bapak/Ibu/Saudara untuk memberikan penilaian atas kinerja kami dan informasi/data statistik yang dibutuhkan melalui link survei berikut ini:\n\"http://s.bps.go.id/7301_SKD2025\"\nDengan mengikuti survei ini, Bapak/Ibu/Saudara telah mendukung upaya kami dalam peningkatan kualitas pelayanan publik BPS.\" \n"
+        }
+      },
+      "type": "@n8n/n8n-nodes-langchain.agent",
+      "typeVersion": 2.2,
+      "position": [
+        -240,
+        0
+      ],
+      "id": "89d09b7e-0868-4c60-a07b-4a8b0169d15e",
+      "name": "AI Agent"
+    },
+    {
+      "parameters": {
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.lmChatGoogleGemini",
+      "typeVersion": 1,
+      "position": [
+        -320,
+        240
+      ],
+      "id": "8885585c-af10-44a0-996e-b9021b0ac798",
+      "name": "Google Gemini Chat Model",
+      "credentials": {
+        "googlePalmApi": {
+          "id": "5ydbYGFY5j0n4dg7",
+          "name": "Google Gemini(PaLM) Api account 2"
+        }
+      }
+    },
+    {
+      "parameters": {},
+      "type": "@n8n/n8n-nodes-langchain.memoryBufferWindow",
+      "typeVersion": 1.3,
+      "position": [
+        -96,
+        432
+      ],
+      "id": "15f65034-1ed9-4891-a91e-ac795762e910",
+      "name": "Simple Memory",
+      "disabled": true
+    },
+    {
+      "parameters": {
+        "documentId": {
+          "__rl": true,
+          "mode": "list",
+          "value": ""
+        },
+        "sheetName": {
+          "__rl": true,
+          "mode": "list",
+          "value": ""
+        }
+      },
+      "type": "n8n-nodes-base.googleSheetsTool",
+      "typeVersion": 4.7,
+      "position": [
+        -48,
+        240
+      ],
+      "id": "3e3382ce-0782-4d17-a2da-f8114e00e781",
+      "name": "Sumber data",
+      "credentials": {
+        "googleSheetsOAuth2Api": {
+          "id": "GdieftyHuO99v4zi",
+          "name": "Google Sheets account"
+        }
+      }
+    },
+    {
+      "parameters": {},
+      "type": "@n8n/n8n-nodes-langchain.memoryZep",
+      "typeVersion": 1.3,
+      "position": [
+        -192,
+        432
+      ],
+      "id": "b3d89df1-b518-488e-bef8-475600eac431",
+      "name": "Zep",
+      "credentials": {
+        "zepApi": {
+          "id": "T8ktwzdAmRDmACZj",
+          "name": "Zep Api account"
+        }
+      }
+    },
+    {
+      "parameters": {},
+      "type": "@n8n/n8n-nodes-langchain.memoryMotorhead",
+      "typeVersion": 1.3,
+      "position": [
+        0,
+        432
+      ],
+      "id": "e56d6571-eeb3-462b-a249-ce39cdf1e22a",
+      "name": "Motorhead",
+      "credentials": {
+        "motorheadApi": {
+          "id": "AKUgW1WW9vJm3Cc0",
+          "name": "MotorheadApi account"
+        }
+      }
+    },
+    {
+      "parameters": {},
+      "type": "@n8n/n8n-nodes-langchain.memoryXata",
+      "typeVersion": 1.4,
+      "position": [
+        -288,
+        432
+      ],
+      "id": "3d52545c-7adf-4da5-a2d7-adffc81602a4",
+      "name": "Xata"
+    },
+    {
+      "parameters": {
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.chatTrigger",
+      "typeVersion": 1.3,
+      "position": [
+        -576,
+        32
+      ],
+      "id": "e22fe6fb-fdd2-4af1-ab71-78722da08f50",
+      "name": "When chat message received",
+      "webhookId": "f81ca01e-fe4e-418f-b11c-08b4b7aa98a8"
+    },
+    {
+      "parameters": {
+        "tableName": "Laya_Chat_History",
+        "contextWindowLength": 6
+      },
+      "type": "@n8n/n8n-nodes-langchain.memoryPostgresChat",
+      "typeVersion": 1.3,
+      "position": [
+        -176,
+        240
+      ],
+      "id": "fc58b140-abab-479e-a628-0c6276fa4b77",
+      "name": "Postgres Chat Memory",
+      "credentials": {
+        "postgres": {
+          "id": "oZLp030GDbmfDmSm",
+          "name": "Postgres account"
+        }
+      }
+    }
+  ],
+  "pinData": {},
+  "connections": {
+    "Google Gemini Chat Model": {
+      "ai_languageModel": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "ai_languageModel",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Simple Memory": {
+      "ai_memory": [
+        []
+      ]
+    },
+    "Sumber data": {
+      "ai_tool": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "ai_tool",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Motorhead": {
+      "ai_memory": [
+        []
+      ]
+    },
+    "Xata": {
+      "ai_memory": [
+        []
+      ]
+    },
+    "Zep": {
+      "ai_memory": [
+        []
+      ]
+    },
+    "When chat message received": {
+      "main": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Postgres Chat Memory": {
+      "ai_memory": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "ai_memory",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "active": false,
+  "settings": {
+    "executionOrder": "v1"
+  },
+  "versionId": "e504259c-7854-4f01-acfd-9e2e38373af4",
+  "meta": {
+    "templateCredsSetupCompleted": true,
+    "instanceId": "805d76a5a0dfbaf1f21de894fa42462268a5a19856d64e2bcfa697888606a1e3"
+  },
+  "id": "SPEUBzFyFp3PdEzx",
+  "tags": []
+}
