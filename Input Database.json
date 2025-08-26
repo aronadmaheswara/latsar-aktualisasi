@@ -1,0 +1,604 @@
+{
+  "name": "Input Database",
+  "nodes": [
+    {
+      "parameters": {
+        "pollTimes": {
+          "item": [
+            {
+              "mode": "everyMinute"
+            }
+          ]
+        },
+        "triggerOn": "specificFolder",
+        "folderToWatch": {
+          "__rl": true,
+          "value": "1EvLJZmrFQiecfK12LHsPP43El-YfgkAU",
+          "mode": "list",
+          "cachedResultName": "Knowledge Based AI Chatbot",
+          "cachedResultUrl": "https://drive.google.com/drive/folders/1EvLJZmrFQiecfK12LHsPP43El-YfgkAU"
+        },
+        "event": "fileCreated",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.googleDriveTrigger",
+      "typeVersion": 1,
+      "position": [
+        -256,
+        64
+      ],
+      "id": "a3a02305-c0f0-4a50-91bb-cc0d92982be3",
+      "name": "Google Drive Trigger",
+      "credentials": {
+        "googleDriveOAuth2Api": {
+          "id": "232mPue4Lh44OuKM",
+          "name": "Google Drive account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "4eace691-817f-49a3-a8ec-6863e0994df4",
+              "name": "Judul",
+              "value": "={{ $json.JudulLengkap }}",
+              "type": "string"
+            },
+            {
+              "id": "3da2dca5-ed9f-47df-9984-e7e663b14c63",
+              "name": "Tahun",
+              "value": "={{ $json.tahun }}",
+              "type": "string"
+            },
+            {
+              "id": "6b76c4ef-cd2c-482f-8477-9818be0670af",
+              "name": "Link",
+              "value": "={{ $json.link }}",
+              "type": "string"
+            }
+          ]
+        },
+        "options": {
+          "dotNotation": true
+        }
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        480,
+        64
+      ],
+      "id": "1c2a28ea-5bd1-4bb3-9acd-95384d42c616",
+      "name": "edit_link"
+    },
+    {
+      "parameters": {
+        "content": "## Input File Gdrive \n**klik link berikut** [Link Drive](https://drive.google.com/drive/folders/1EvLJZmrFQiecfK12LHsPP43El-YfgkAU)\nPastikan nama file sesuai format (Judul file_tahun)\n\n_Contoh: Jumlah Penduduk Kabupaten Kepulauan Selayar Tahun_2024.xlsx_",
+        "height": 356,
+        "width": 416
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "position": [
+        -336,
+        -128
+      ],
+      "typeVersion": 1,
+      "id": "e2edb18c-d384-46a6-be92-89e50f636ca8",
+      "name": "Sticky Note2"
+    },
+    {
+      "parameters": {
+        "content": "## Baca Informasi Dokumen\nPada bagian ini, automation akan otomatis mengambil informasi yang diupload di Gdrive (Judul, Tahun, Link)\n\nPastikan nama file di Gdrive sudah sesuai format, Judul_Tahun\nMisalnya **Jumlah Penduduk Kabupaten Kepulauan Selayar Tahun_2024.xlsx**",
+        "height": 356,
+        "width": 580,
+        "color": 3
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "position": [
+        80,
+        -128
+      ],
+      "typeVersion": 1,
+      "id": "39b6e07c-408a-45ef-b8b0-61fffe25cd72",
+      "name": "Sticky Note3"
+    },
+    {
+      "parameters": {
+        "content": "## Mencatat ke Spreadsheet\nLihat Spreadsheet [disini](https://docs.google.com/spreadsheets/d/1JgdsBpkYxzSkogywY51Zxkwho_5hfYJ88-UHo5tgBIU/edit?gid=0#gid=0)\n\n\n",
+        "height": 356,
+        "width": 356,
+        "color": 4
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "position": [
+        656,
+        -128
+      ],
+      "typeVersion": 1,
+      "id": "b2bc9b68-037b-4ab3-8109-088712f54a7f",
+      "name": "Sticky Note4"
+    },
+    {
+      "parameters": {
+        "jsCode": "return items.map(item => {\n  const fullName = item.json.name || ''; // 1. Ambil nama file lengkap dari input item\n  const fileNameWithoutExtension = fullName.replace(/\\.[^/.]+$/, ''); // 2. Hapus ekstensi file\n\n  // 3. Hapus semua simbol di akhir 'fileNameWithoutExtension'\n  // Regex: mencocokkan satu atau lebih karakter yang BUKAN huruf (\\p{L}), angka (\\p{N}), atau spasi (\\s), di akhir string.\n  // Flag 'u' untuk mendukung Unicode (penting untuk huruf di luar Latin).\n  const judulSementaraBersih = fileNameWithoutExtension.replace(/[^\\p{L}\\p{N}\\s]+$/u, '').trim();\n\n  // 4. Dari 'judulSementaraBersih', pisahkan judul utama dan tahun\n  // Regex fleksibel: cari bagian sebelum pemisah (spasi, underscore, titik, atau dash) + 4 digit tahun di akhir string.\n  // Pastikan regex ini mencari di 'judulSementaraBersih' yang sudah bersih dari simbol akhir.\n  const match = judulSementaraBersih.match(/^(.*?)[\\s._-]+(\\d{4})$/);\n\n  let judulFinal = judulSementaraBersih; // Default judul adalah judulSementaraBersih jika tidak ada match tahun\n  let tahun = null; // Default tahun adalah null\n\n  if (match) {\n    judulFinal = match[1].trim(); // Bagian pertama dari match (sebelum pemisah dan tahun)\n    tahun = match[2];           // Bagian kedua dari match (4 digit tahun)\n  }\n\n  // Menentukan JudulLengkap\n  // Jika Anda ingin JudulLengkap adalah \"Judul Utama Tahun\" (misal: \"Jumlah Penduduk 2024\")\n  let JudulLengkap;\n  if (tahun) {\n      JudulLengkap = `${judulFinal} ${tahun}`;\n  } else {\n      JudulLengkap = judulFinal; // Jika tidak ada tahun, JudulLengkap = Judul utama\n  }\n\n\n  return {\n    json: {\n      originalName: fullName,\n      JudulLengkap: JudulLengkap, // Judul dengan atau tanpa tahun, tanpa ekstensi, tanpa simbol akhir\n      judul: JudulLengkap,        // Judul utama saja, tanpa tahun, tanpa ekstensi, tanpa simbol akhir\n      tahun: tahun,             // Tahun (4 digit)\n      link: item.json.webViewLink || item.json.alternateLink || null // Link GDrive\n    }\n  };\n});"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        144,
+        64
+      ],
+      "id": "a1a1df53-be01-4988-b4e2-2dc5adc9afaf",
+      "name": "Code"
+    },
+    {
+      "parameters": {
+        "operation": "append",
+        "documentId": {
+          "__rl": true,
+          "value": "1JgdsBpkYxzSkogywY51Zxkwho_5hfYJ88-UHo5tgBIU",
+          "mode": "list",
+          "cachedResultName": "Database Bot Laya",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1JgdsBpkYxzSkogywY51Zxkwho_5hfYJ88-UHo5tgBIU/edit?usp=drivesdk"
+        },
+        "sheetName": {
+          "__rl": true,
+          "value": "gid=0",
+          "mode": "list",
+          "cachedResultName": "Permintaan Data",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1JgdsBpkYxzSkogywY51Zxkwho_5hfYJ88-UHo5tgBIU/edit#gid=0"
+        },
+        "columns": {
+          "mappingMode": "defineBelow",
+          "value": {
+            "Link": "={{ $json.Link }}",
+            "Tahun": "={{ $json.Tahun }}",
+            "Judul": "={{ $json.Judul }}"
+          },
+          "matchingColumns": [],
+          "schema": [
+            {
+              "id": "Judul",
+              "displayName": "Judul",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "Tahun",
+              "displayName": "Tahun",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "Link",
+              "displayName": "Link",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "Link Pendek",
+              "displayName": "Link Pendek",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": true
+            }
+          ],
+          "attemptToConvertTypes": false,
+          "convertFieldsToString": false
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.googleSheets",
+      "typeVersion": 4.5,
+      "position": [
+        768,
+        64
+      ],
+      "id": "ba5242c6-51c5-4718-8d02-8adc915d8584",
+      "name": "Append row in sheet",
+      "credentials": {
+        "googleSheetsOAuth2Api": {
+          "id": "GdieftyHuO99v4zi",
+          "name": "Google Sheets account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "url": "https://webapi.bps.go.id/v1/api/list/model/publication/lang/ind/domain/7301/page/4/key/f4e967cd01122dd9369e555c52075c83/",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        80,
+        416
+      ],
+      "id": "9239dc38-e245-42c6-8d9d-577656151f36",
+      "name": "HTTP Request2"
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "e779f924-18fe-40d3-8eaf-24940a594bcd",
+              "name": "Judul_pub",
+              "value": "={{ $json.title}}",
+              "type": "string"
+            },
+            {
+              "id": "f12bffa1-3f70-4332-9383-ea51316af715",
+              "name": "Link_pub",
+              "value": "={{ $json.pdf }}",
+              "type": "string"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        656,
+        416
+      ],
+      "id": "a7815e17-8e3f-415c-bfe5-f007fc88eb76",
+      "name": "Edit Fields1"
+    },
+    {
+      "parameters": {},
+      "type": "n8n-nodes-base.manualTrigger",
+      "typeVersion": 1,
+      "position": [
+        -208,
+        416
+      ],
+      "id": "6d309a75-ad61-4f48-b104-9effa79e7d75",
+      "name": "When clicking ‘Execute workflow’"
+    },
+    {
+      "parameters": {
+        "jsCode": "const response = items[0].json;\n\n// Pastikan kita flatten array nested publikasi\nlet publikasiArray = [];\nif (Array.isArray(response.data)) {\n  response.data.forEach(item => {\n    if (Array.isArray(item)) {\n      publikasiArray = publikasiArray.concat(item);\n    }\n  });\n}\n\nreturn publikasiArray.map(item => ({\n  json: {\n    pub_id: item.pub_id,\n    title: item.title,\n    abstract: item.abstract,\n    subject: item.subject_csa ? item.subject_csa.join(', ') : '-',\n    release_date: item.rl_date,\n    size: item.size,\n    cover: item.cover,\n    pdf: item.pdf,\n  }\n}));\n"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        352,
+        416
+      ],
+      "id": "c55f2e43-5af4-4dd0-a5e3-a478119bfbd3",
+      "name": "Code1"
+    },
+    {
+      "parameters": {
+        "operation": "append",
+        "documentId": {
+          "__rl": true,
+          "value": "1JgdsBpkYxzSkogywY51Zxkwho_5hfYJ88-UHo5tgBIU",
+          "mode": "list",
+          "cachedResultName": "Database Bot Laya",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1JgdsBpkYxzSkogywY51Zxkwho_5hfYJ88-UHo5tgBIU/edit?usp=drivesdk"
+        },
+        "sheetName": {
+          "__rl": true,
+          "value": 365480708,
+          "mode": "list",
+          "cachedResultName": "Publikasi",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1JgdsBpkYxzSkogywY51Zxkwho_5hfYJ88-UHo5tgBIU/edit#gid=365480708"
+        },
+        "columns": {
+          "mappingMode": "defineBelow",
+          "value": {
+            "Judul Publikasi": "={{ $json['Judul Publikasi'] }}",
+            "Tahun": "={{ $json.Tahun }}",
+            "Link Publikasi": "={{ $json.Link_pub }}"
+          },
+          "matchingColumns": [],
+          "schema": [
+            {
+              "id": "Judul Publikasi",
+              "displayName": "Judul Publikasi",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "Tahun",
+              "displayName": "Tahun",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "Link Publikasi",
+              "displayName": "Link Publikasi",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            }
+          ],
+          "attemptToConvertTypes": false,
+          "convertFieldsToString": false
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.googleSheets",
+      "typeVersion": 4.5,
+      "position": [
+        1472,
+        416
+      ],
+      "id": "212caf90-19ec-4224-891e-2e665ddd1b1a",
+      "name": "Append row in sheet1",
+      "credentials": {
+        "googleSheetsOAuth2Api": {
+          "id": "GdieftyHuO99v4zi",
+          "name": "Google Sheets account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "jsCode": "return items.map(item => {\n  const fullName = item.json.name || '';\n  const fileName = item.json.Judul_pub.replace(/\\.[^/.]+$/, '');\n  const JudulLengkap = item.json.Judul_pub.replace(/\\.[^/.]+$/, '');\n\n  // regex fleksibel: cari akhir dengan spasi, underscore, titik, atau dash + 4 digit tahun\n  const match = fileName.match(/^(.*?)[\\s._-]+(\\d{4})$/);\n\n  let judul = fileName;\n  let tahun = null;\n\n  if (match) {\n    judul = match[1].trim();\n    tahun = match[2];\n  }\n\n  return {\n    json: {\n      originalName: fullName,\n      JudulLengkap,\n      judul,\n      tahun,\n      Link_pub: item.json.Link_pub || item.json.alternateLink || null\n    }\n  };\n});\n"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        960,
+        416
+      ],
+      "id": "f6f2751d-ea83-4b9a-b66e-8efa2a2dcde5",
+      "name": "Code2"
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "4eace691-817f-49a3-a8ec-6863e0994df4",
+              "name": "Judul Publikasi",
+              "value": "={{ $json.JudulLengkap }}",
+              "type": "string"
+            },
+            {
+              "id": "3da2dca5-ed9f-47df-9984-e7e663b14c63",
+              "name": "Tahun",
+              "value": "={{ $json.tahun }}",
+              "type": "string"
+            },
+            {
+              "id": "6b76c4ef-cd2c-482f-8477-9818be0670af",
+              "name": "Link_pub",
+              "value": "={{ $json.Link_pub }}",
+              "type": "string"
+            }
+          ]
+        },
+        "options": {
+          "dotNotation": true
+        }
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        1184,
+        416
+      ],
+      "id": "88468861-1d83-4728-afca-dbb9d1d56805",
+      "name": "edit_link1"
+    },
+    {
+      "parameters": {
+        "content": "## Mengambil data dengan API BPS\nMengambil data judul publikasi, tahun, dan link",
+        "height": 300,
+        "width": 600
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "position": [
+        -352,
+        304
+      ],
+      "typeVersion": 1,
+      "id": "3a031e2c-a624-4e01-b880-49e4e91105fa",
+      "name": "Sticky Note6"
+    },
+    {
+      "parameters": {
+        "content": "## Olah Data\nMerubah data agar dapat disusun\n",
+        "height": 300,
+        "width": 300,
+        "color": 4
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "position": [
+        256,
+        304
+      ],
+      "typeVersion": 1,
+      "id": "af926591-c037-43ad-a72d-1a991f246525",
+      "name": "Sticky Note7"
+    },
+    {
+      "parameters": {
+        "content": "## Filter Data\nMemilih informasi yang akan ditampilkan\n",
+        "height": 300,
+        "width": 300,
+        "color": 6
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "position": [
+        560,
+        304
+      ],
+      "typeVersion": 1,
+      "id": "22671fae-3f20-40e4-8b6e-6c210ef3f585",
+      "name": "Sticky Note8"
+    },
+    {
+      "parameters": {
+        "content": "## Merapikan Informasi\nSecara otomatis membagi judul dengan tahun\n",
+        "height": 300,
+        "width": 280,
+        "color": 2
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "position": [
+        864,
+        304
+      ],
+      "typeVersion": 1,
+      "id": "adde5e64-b560-4e75-bbc7-bf99f6f424cf",
+      "name": "Sticky Note9"
+    },
+    {
+      "parameters": {
+        "content": "## Mencatat ke Spreadsheet\nSecara otomatis mencatat setiap informasi ke Google Sheet\n",
+        "height": 300,
+        "width": 480,
+        "color": 4
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "position": [
+        1136,
+        304
+      ],
+      "typeVersion": 1,
+      "id": "246e2069-33ce-490d-b6f6-84ee811351be",
+      "name": "Sticky Note10"
+    }
+  ],
+  "pinData": {},
+  "connections": {
+    "Google Drive Trigger": {
+      "main": [
+        [
+          {
+            "node": "Code",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "edit_link": {
+      "main": [
+        [
+          {
+            "node": "Append row in sheet",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Code": {
+      "main": [
+        [
+          {
+            "node": "edit_link",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "HTTP Request2": {
+      "main": [
+        [
+          {
+            "node": "Code1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Edit Fields1": {
+      "main": [
+        [
+          {
+            "node": "Code2",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "When clicking ‘Execute workflow’": {
+      "main": [
+        [
+          {
+            "node": "HTTP Request2",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Code1": {
+      "main": [
+        [
+          {
+            "node": "Edit Fields1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Code2": {
+      "main": [
+        [
+          {
+            "node": "edit_link1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "edit_link1": {
+      "main": [
+        [
+          {
+            "node": "Append row in sheet1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "active": true,
+  "settings": {
+    "executionOrder": "v1"
+  },
+  "versionId": "bb185e3e-fcac-4afa-a158-fb6b75dc9289",
+  "meta": {
+    "instanceId": "805d76a5a0dfbaf1f21de894fa42462268a5a19856d64e2bcfa697888606a1e3"
+  },
+  "id": "YIqPRe234jVQvIbt",
+  "tags": []
+}
