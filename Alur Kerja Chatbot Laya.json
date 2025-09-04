@@ -1,0 +1,1771 @@
+{
+  "name": "LAYA 2",
+  "nodes": [
+    {
+      "parameters": {
+        "promptType": "define",
+        "text": "={{ $json.body.pesan }}\n{{ $json.body.message }}",
+        "options": {
+          "systemMessage": "=##Summary\nYou are Laya, the Virtual Assistant of the Central Bureau of Statistics of Selayar Islands Regency (BPS Kabupaten Kepulauan Selayar). Your job is to help users find the data they need in the database about BPS Kabupaten Kepualaun Selayar or Kepulauan Selayar Regency. You also have to help users if they ask about the BPS profile. you can interact with user with using emoticon. you speak Indonesian politely but with fun and slangy way. You can also use various emotes to make the conversation more interesting but dont to much. You can call the user with “kak” or “kakak” to make it seem more familiar as a substitute for name calling but for the initial call still call using the name. If the user enters the wrong input, please ask the user to clarify the meaning of the input.\n\n### Greetings\nHi Kak *{{ $json.body.name }}* , Saya Laya, Assisten Virtual BPS Kabupaten Kepulauan Selayar. Saya dapat membantu Anda mencari data yang Anda butuhkan. Sebutkan data secara lengkap untuk memudahkan saya mencari data yang cocok untuk Anda. Anda bisa bertanya mengenai:\n- Data Strategis\n- Permintaan Data\n- Publikasi\n- Informasi Seputar BPS Selayar\n- Rekomendasi Kegiatan Statistik\n- Layanan Konsultasi Online/Offline\nAda yang bisa Laya bantu?\n\n##Tools\nSumber data - use this to search for any data as requested by the user;\nThink - use this if you need help in making decisions;\nProfil BPS - use this to find other information about BPS;\nPublikasi - use this to search for any publication as requested by the user;\nData Strategis - Use this to search for strategic data or key statistics commonly requested by users based on the year period, such as population, TPT, TPAC, etc. It contains basic data commonly requested by users;\nLayanan konsultasi - Use this if any users want consultation services.\n\n\n##IMPORTANT:\n- You should be concise, direct, and to the point. \n- IMPORTANT: DO NOT ADD ***ANY*** COMMENTS unless asked\n- AVOID : DO NOT SEND DOUBLE LINK, \n- Do not use markdown for links.\n- Do not repeat the link.\n- Output the link in plain text only.\n- Do not modify, shorten, duplicate, or reformat the link.\n- Do not wrap it in brackets or markdown.\n- Always display it exactly as written above.\n- Do not use foreign language, use Indonesia only\n- Avoid using weird symbol\n\n#Instructions\n- Always send links in plain text format only, without markdown, quotes, or brackets.\nDo not repeat the link.\n- Reduce the use of unclear and unnecessary symbols (such as *,_,- ). Prioritize user comfort when interacting with you.\n\n- If a user asks “Is that data available” or “is this data available or not” they want to see in the database if the data is available.\n\n- If a user asks “Is that publication available” or “is this publication available or not” they want to see in the database if the publication is available.\n\n- If they ask other things about the Central Bureau of Statistics (BPS), such as \"where is bps located\", \"what is bps instagram\", \"what is bps service\", answer these questions carefully according to the Tools (BPS Profile) you have.\n\n- Make sure to check again whether the results are correct and don't send double link\n\n- If a user ask for \"Rekomendasi Kegiatan Statistik\", you can respond it with \"Anda dapat mengajukan Rekomendasi Kegiatan Statistik pada website berikut : https://romantik.web.bps.go.id/\"\n\n- IF a user ask for consultation services (\"Layanan Konsultasi\"), you can respond it with this exact message only::\n\"Silakan mengisi link berikut untuk menggunakan layanan konsultasi:\nhttp://s.bps.go.id/Layanan_Konsultasi_7301\nAnda akan segera dihubungi oleh Petugas Pelayanan BPS Kabupaten Kepulauan Selayar\"\n\n- If users ask about strategic data, they want to see the statistics in the database (data strategis). Ask them in detail what data they want to know and for which year. You can respond based on the tools provided. \n\n#FAQ\nYou can use it to respond to user requests regarding frequently asked questions about BPS Kabupaten Kepulauan Selayar.\n- Apakah data yang disediakan BPS gratis?\nJawaban : Seluruh data yang tersedia di website dan layanan bot dapat diakses secara gratis.\n\n- Bagaimana saya dapat memberikan saran atau masukan kepada BPS\nJawaban : \"Saran dan masukan yang Anda berikan akan sangat bermanfaat bagi pelayanan kami. Silakan mengisi saran dan masukan pada link berikut : https://s.bps.go.id/Pengaduan7301\"\n\n#Outputs\nJudul: \nTahun: \nLink :\n\nJudul: \nTahun: \nLink :\n\nJudul: \nTahun: \nLink :\n\n#Close\nIf there is no need for assistance please send the following message:\n\"Terima kasih telah mengggunakan layanan Virtual Assistant AI BPS Kabupaten Kepulauan Selayar.\nMohon kesediaan Bapak/Ibu/Saudara untuk memberikan penilaian atas kinerja kami dan informasi/data statistik yang dibutuhkan melalui link survei berikut ini:\n\"http://s.bps.go.id/7301_SKD2025\"\nDengan mengikuti survei ini, Bapak/Ibu/Saudara telah mendukung upaya kami dalam peningkatan kualitas pelayanan publik BPS.\" "
+        }
+      },
+      "id": "feec5ebb-415e-4d0c-aaca-5984eeaef9b1",
+      "name": "Agent",
+      "type": "@n8n/n8n-nodes-langchain.agent",
+      "typeVersion": 1.7,
+      "position": [
+        592,
+        32
+      ]
+    },
+    {
+      "parameters": {
+        "modelName": "models/gemini-2.0-flash",
+        "options": {
+          "temperature": 0.1,
+          "topP": 1
+        }
+      },
+      "type": "@n8n/n8n-nodes-langchain.lmChatGoogleGemini",
+      "typeVersion": 1,
+      "position": [
+        176,
+        256
+      ],
+      "id": "b94df5b0-f9b4-4f9c-bd9e-2d679fe6b0f7",
+      "name": "Google Gemini Chat Model",
+      "credentials": {
+        "googlePalmApi": {
+          "id": "5ydbYGFY5j0n4dg7",
+          "name": "Google Gemini(PaLM) Api account 2"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "sessionIdType": "customKey",
+        "sessionKey": "={{ $json.body.sender }}"
+      },
+      "type": "@n8n/n8n-nodes-langchain.memoryBufferWindow",
+      "typeVersion": 1.3,
+      "position": [
+        368,
+        272
+      ],
+      "id": "737fdb8b-b921-4216-95ed-b28dac901eb9",
+      "name": "Simple Memory"
+    },
+    {
+      "parameters": {
+        "description": "Pastikan semua data atau publikasi yang diminta pengguna sesuai. Cek penulisan jika penggunaan kapital nya berbeda. tanyakan kepada user jika mereka lupa memberikan request secara detail.\n\nJika penggunaan kata tidak sesuai dengan judul atau pengguna hanya memasukan satu kata maka cari kata yang bersesuaian di sumber data dan publikasi. Seusiakan untuk setiap kata yang ada dalam sumber data dan publikasi\n\nJika pengguna menanyakan hal tentang BPS silakan jawab sesuai dengan tools yang kamu miliki"
+      },
+      "type": "@n8n/n8n-nodes-langchain.toolThink",
+      "typeVersion": 1,
+      "position": [
+        960,
+        272
+      ],
+      "id": "edb5fda4-448e-4011-85cd-719e206831a4",
+      "name": "Think"
+    },
+    {
+      "parameters": {
+        "options": {
+          "gl": "indonesia",
+          "hl": "indonesia"
+        }
+      },
+      "type": "@n8n/n8n-nodes-langchain.toolSerpApi",
+      "typeVersion": 1,
+      "position": [
+        1056,
+        272
+      ],
+      "id": "4cd8f8c5-4067-4fac-abb5-a3270dec8f64",
+      "name": "SerpAPI",
+      "disabled": true
+    },
+    {
+      "parameters": {
+        "descriptionType": "manual",
+        "toolDescription": "=Read on Google Sheets based on user request  {{ $json.chatInput }}",
+        "documentId": {
+          "__rl": true,
+          "value": "1JgdsBpkYxzSkogywY51Zxkwho_5hfYJ88-UHo5tgBIU",
+          "mode": "list",
+          "cachedResultName": "Database Bot Laya",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1JgdsBpkYxzSkogywY51Zxkwho_5hfYJ88-UHo5tgBIU/edit?usp=drivesdk"
+        },
+        "sheetName": {
+          "__rl": true,
+          "value": "gid=0",
+          "mode": "list",
+          "cachedResultName": "Permintaan Data",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1JgdsBpkYxzSkogywY51Zxkwho_5hfYJ88-UHo5tgBIU/edit#gid=0"
+        },
+        "combineFilters": "OR",
+        "options": {
+          "dataLocationOnSheet": {
+            "values": {
+              "rangeDefinition": "detectAutomatically"
+            }
+          }
+        }
+      },
+      "type": "n8n-nodes-base.googleSheetsTool",
+      "typeVersion": 4.5,
+      "position": [
+        480,
+        272
+      ],
+      "id": "8ecb6ecb-0ea1-4591-a545-b8489e291421",
+      "name": "sumber data",
+      "credentials": {
+        "googleSheetsOAuth2Api": {
+          "id": "GdieftyHuO99v4zi",
+          "name": "Google Sheets account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "descriptionType": "manual",
+        "toolDescription": "=Read data on Google Sheets base on the question {{ $json.chatInput }}",
+        "documentId": {
+          "__rl": true,
+          "value": "1JgdsBpkYxzSkogywY51Zxkwho_5hfYJ88-UHo5tgBIU",
+          "mode": "list",
+          "cachedResultName": "Database Bot Laya",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1JgdsBpkYxzSkogywY51Zxkwho_5hfYJ88-UHo5tgBIU/edit?usp=drivesdk"
+        },
+        "sheetName": {
+          "__rl": true,
+          "value": 1607741726,
+          "mode": "list",
+          "cachedResultName": "Profil BPS",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1JgdsBpkYxzSkogywY51Zxkwho_5hfYJ88-UHo5tgBIU/edit#gid=1607741726"
+        },
+        "combineFilters": "OR",
+        "options": {
+          "dataLocationOnSheet": {
+            "values": {
+              "rangeDefinition": "detectAutomatically"
+            }
+          }
+        }
+      },
+      "type": "n8n-nodes-base.googleSheetsTool",
+      "typeVersion": 4.5,
+      "position": [
+        608,
+        272
+      ],
+      "id": "c4dbe736-8637-48b1-ab45-4501f120f46c",
+      "name": "Profil BPS",
+      "credentials": {
+        "googleSheetsOAuth2Api": {
+          "id": "GdieftyHuO99v4zi",
+          "name": "Google Sheets account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "httpMethod": "POST",
+        "path": "6a9813a8-cb79-4b80-90f8-5ed8f23489fa",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.webhook",
+      "typeVersion": 2,
+      "position": [
+        32,
+        16
+      ],
+      "id": "1cf61c3a-a19a-47a2-b9c6-ca0e12dbe313",
+      "name": "Webhook",
+      "webhookId": "6a9813a8-cb79-4b80-90f8-5ed8f23489fa"
+    },
+    {
+      "parameters": {
+        "pollTimes": {
+          "item": [
+            {
+              "mode": "everyMinute"
+            }
+          ]
+        },
+        "triggerOn": "specificFolder",
+        "folderToWatch": {
+          "__rl": true,
+          "value": "1EvLJZmrFQiecfK12LHsPP43El-YfgkAU",
+          "mode": "list",
+          "cachedResultName": "Knowledge Based AI Chatbot",
+          "cachedResultUrl": "https://drive.google.com/drive/folders/1EvLJZmrFQiecfK12LHsPP43El-YfgkAU"
+        },
+        "event": "fileUpdated",
+        "options": {
+          "fileType": "all"
+        }
+      },
+      "type": "n8n-nodes-base.googleDriveTrigger",
+      "typeVersion": 1,
+      "position": [
+        128,
+        -288
+      ],
+      "id": "fb27d55b-c6b0-4e60-a442-cc6f74c8c911",
+      "name": "Google Drive Trigger",
+      "credentials": {
+        "googleDriveOAuth2Api": {
+          "id": "232mPue4Lh44OuKM",
+          "name": "Google Drive account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "4eace691-817f-49a3-a8ec-6863e0994df4",
+              "name": "Judul",
+              "value": "={{ $json.JudulLengkap }}",
+              "type": "string"
+            },
+            {
+              "id": "3da2dca5-ed9f-47df-9984-e7e663b14c63",
+              "name": "Tahun",
+              "value": "={{ $json.tahun }}",
+              "type": "string"
+            },
+            {
+              "id": "6b76c4ef-cd2c-482f-8477-9818be0670af",
+              "name": "Link",
+              "value": "={{ $json.link }}",
+              "type": "string"
+            }
+          ]
+        },
+        "options": {
+          "dotNotation": true
+        }
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        752,
+        -288
+      ],
+      "id": "8728adcd-f3d4-45f8-ba58-4b920855ce1b",
+      "name": "edit_link"
+    },
+    {
+      "parameters": {
+        "content": "## Whatsapp\nsementara menggunakan fonnte.com",
+        "height": 240,
+        "width": 376,
+        "color": 4
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "position": [
+        -48,
+        -64
+      ],
+      "typeVersion": 1,
+      "id": "9d219856-c490-45f4-ac1a-9dc7c6a15ddf",
+      "name": "Sticky Note"
+    },
+    {
+      "parameters": {
+        "content": "## AI Chat Bot\nBerisi AI Model dengan knowledge base dari google sheet",
+        "height": 460,
+        "width": 852
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "position": [
+        320,
+        -64
+      ],
+      "typeVersion": 1,
+      "id": "70f0f6f9-64fe-42c7-903d-e0d49c889e28",
+      "name": "Sticky Note1"
+    },
+    {
+      "parameters": {
+        "content": "## Input File Gdrive \n**klik link berikut** [Link Drive](https://drive.google.com/drive/folders/1EvLJZmrFQiecfK12LHsPP43El-YfgkAU)\nPastikan nama file sesuai format (Judul file_tahun)\n\n_Contoh: Jumlah Penduduk Kabupaten Kepulauan Selayar Tahun_2024.xlsx_",
+        "height": 340,
+        "width": 400
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "position": [
+        48,
+        -464
+      ],
+      "typeVersion": 1,
+      "id": "d1f499a7-f9a0-433d-9508-53be3f0a8e45",
+      "name": "Sticky Note2"
+    },
+    {
+      "parameters": {
+        "content": "## Baca Informasi Dokumen\nPada bagian ini, automation akan otomatis mengambil informasi yang diupload di Gdrive (Judul, Tahun, Link)\n\nPastikan nama file di Gdrive sudah sesuai format, Judul_Tahun\nMisalnya **Jumlah Penduduk Kabupaten Kepulauan Selayar Tahun_2024.xlsx**",
+        "height": 340,
+        "width": 580,
+        "color": 3
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "position": [
+        448,
+        -464
+      ],
+      "typeVersion": 1,
+      "id": "f26481ec-8077-4fbf-8f9a-25b34a978958",
+      "name": "Sticky Note3"
+    },
+    {
+      "parameters": {
+        "content": "## Mencatat ke Spreadsheet\nLihat Spreadsheet [disini](https://docs.google.com/spreadsheets/d/1JgdsBpkYxzSkogywY51Zxkwho_5hfYJ88-UHo5tgBIU/edit?gid=0#gid=0)\n\n\n",
+        "height": 340,
+        "width": 340,
+        "color": 4
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "position": [
+        1024,
+        -464
+      ],
+      "typeVersion": 1,
+      "id": "f44069fd-eebe-4a64-b00d-186d19426152",
+      "name": "Sticky Note4"
+    },
+    {
+      "parameters": {
+        "content": "## Membalas pesan pengguna\n\n",
+        "height": 300,
+        "width": 324,
+        "color": 5
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "position": [
+        1168,
+        -64
+      ],
+      "typeVersion": 1,
+      "id": "dd688c14-ef97-42d6-8fbf-3ef328ea3133",
+      "name": "Sticky Note5"
+    },
+    {
+      "parameters": {
+        "jsCode": "return items.map(item => {\n  const fullName = item.json.name || '';\n  const fileName = fullName.replace(/\\.[^/.]+$/, '');\n  const JudulLengkap = fullName.replace(/\\.[^/.]+$/, '');// hapus .pdf, .docx, dll\n\n  // regex fleksibel: cari akhir dengan spasi, underscore, titik, atau dash + 4 digit tahun\n  const match = fileName.match(/^(.*?)[\\s._-]+(\\d{4})$/);\n\n  let judul = fileName;\n  let tahun = null;\n\n  if (match) {\n    judul = match[1].trim();\n    tahun = match[2];\n  }\n\n  return {\n    json: {\n      originalName: fullName,\n      JudulLengkap,\n      judul,\n      tahun,\n      link: item.json.webViewLink || item.json.alternateLink || null\n    }\n  };\n});\n"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        320,
+        -288
+      ],
+      "id": "bdeed975-d4d0-4099-885b-fa63e204896a",
+      "name": "Code"
+    },
+    {
+      "parameters": {
+        "operation": "append",
+        "documentId": {
+          "__rl": true,
+          "value": "1JgdsBpkYxzSkogywY51Zxkwho_5hfYJ88-UHo5tgBIU",
+          "mode": "list",
+          "cachedResultName": "Database Bot Laya",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1JgdsBpkYxzSkogywY51Zxkwho_5hfYJ88-UHo5tgBIU/edit?usp=drivesdk"
+        },
+        "sheetName": {
+          "__rl": true,
+          "value": "gid=0",
+          "mode": "list",
+          "cachedResultName": "Permintaan Data",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1JgdsBpkYxzSkogywY51Zxkwho_5hfYJ88-UHo5tgBIU/edit#gid=0"
+        },
+        "columns": {
+          "mappingMode": "defineBelow",
+          "value": {
+            "Link": "={{ $json.Link }}",
+            "Tahun": "={{ $json.Tahun }}",
+            "Judul": "={{ $json.Judul }}"
+          },
+          "matchingColumns": [],
+          "schema": [
+            {
+              "id": "Judul",
+              "displayName": "Judul",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "Tahun",
+              "displayName": "Tahun",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "Link",
+              "displayName": "Link",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "Link Pendek",
+              "displayName": "Link Pendek",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": true
+            }
+          ],
+          "attemptToConvertTypes": false,
+          "convertFieldsToString": false
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.googleSheets",
+      "typeVersion": 4.5,
+      "position": [
+        1120,
+        -288
+      ],
+      "id": "a11ba7b4-e661-4daf-bed3-55e421c9d2d9",
+      "name": "Append row in sheet",
+      "credentials": {
+        "googleSheetsOAuth2Api": {
+          "id": "GdieftyHuO99v4zi",
+          "name": "Google Sheets account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "https://api.fonnte.com/send",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "Authorization",
+              "value": "fgvNmnSr2BQWypTW56F5"
+            }
+          ]
+        },
+        "sendBody": true,
+        "bodyParameters": {
+          "parameters": [
+            {
+              "name": "Message",
+              "value": "={{ $json.output }}"
+            },
+            {
+              "name": "Target",
+              "value": "={{ $('Webhook').item.json.body.sender }}"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        1264,
+        48
+      ],
+      "id": "1bdaf4f6-c5ec-4f3c-96e2-2aba599a0451",
+      "name": "HTTP Request1"
+    },
+    {
+      "parameters": {
+        "url": "https://webapi.bps.go.id/v1/api/list/model/publication/lang/ind/domain/7301/page/4/key/f4e967cd01122dd9369e555c52075c83/",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        368,
+        -704
+      ],
+      "id": "bc5f1076-4da7-4bd6-a838-88223039e701",
+      "name": "HTTP Request2"
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "e779f924-18fe-40d3-8eaf-24940a594bcd",
+              "name": "Judul_pub",
+              "value": "={{ $json.title}}",
+              "type": "string"
+            },
+            {
+              "id": "f12bffa1-3f70-4332-9383-ea51316af715",
+              "name": "Link_pub",
+              "value": "={{ $json.pdf }}",
+              "type": "string"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        944,
+        -704
+      ],
+      "id": "f2450c67-d8e5-40f0-a9e8-b2e22e64039a",
+      "name": "Edit Fields1"
+    },
+    {
+      "parameters": {},
+      "type": "n8n-nodes-base.manualTrigger",
+      "typeVersion": 1,
+      "position": [
+        80,
+        -704
+      ],
+      "id": "7b05e570-e534-44f6-94a1-eb9a008a0b56",
+      "name": "When clicking ‘Execute workflow’"
+    },
+    {
+      "parameters": {
+        "jsCode": "const response = items[0].json;\n\n// Pastikan kita flatten array nested publikasi\nlet publikasiArray = [];\nif (Array.isArray(response.data)) {\n  response.data.forEach(item => {\n    if (Array.isArray(item)) {\n      publikasiArray = publikasiArray.concat(item);\n    }\n  });\n}\n\nreturn publikasiArray.map(item => ({\n  json: {\n    pub_id: item.pub_id,\n    title: item.title,\n    abstract: item.abstract,\n    subject: item.subject_csa ? item.subject_csa.join(', ') : '-',\n    release_date: item.rl_date,\n    size: item.size,\n    cover: item.cover,\n    pdf: item.pdf,\n  }\n}));\n"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        640,
+        -704
+      ],
+      "id": "1d0ce66f-e146-4a81-ba6c-351ce3b7a2df",
+      "name": "Code1"
+    },
+    {
+      "parameters": {
+        "operation": "append",
+        "documentId": {
+          "__rl": true,
+          "value": "1JgdsBpkYxzSkogywY51Zxkwho_5hfYJ88-UHo5tgBIU",
+          "mode": "list",
+          "cachedResultName": "Database Bot Laya",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1JgdsBpkYxzSkogywY51Zxkwho_5hfYJ88-UHo5tgBIU/edit?usp=drivesdk"
+        },
+        "sheetName": {
+          "__rl": true,
+          "value": 365480708,
+          "mode": "list",
+          "cachedResultName": "Publikasi",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1JgdsBpkYxzSkogywY51Zxkwho_5hfYJ88-UHo5tgBIU/edit#gid=365480708"
+        },
+        "columns": {
+          "mappingMode": "defineBelow",
+          "value": {
+            "Judul Publikasi": "={{ $json['Judul Publikasi'] }}",
+            "Tahun": "={{ $json.Tahun }}",
+            "Link Publikasi": "={{ $json.Link_pub }}"
+          },
+          "matchingColumns": [],
+          "schema": [
+            {
+              "id": "Judul Publikasi",
+              "displayName": "Judul Publikasi",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "Tahun",
+              "displayName": "Tahun",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "Link Publikasi",
+              "displayName": "Link Publikasi",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            }
+          ],
+          "attemptToConvertTypes": false,
+          "convertFieldsToString": false
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.googleSheets",
+      "typeVersion": 4.5,
+      "position": [
+        1680,
+        -704
+      ],
+      "id": "dfd68403-73c2-4991-b8d5-133d1a07cb0e",
+      "name": "Append row in sheet1",
+      "credentials": {
+        "googleSheetsOAuth2Api": {
+          "id": "GdieftyHuO99v4zi",
+          "name": "Google Sheets account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "jsCode": "return items.map(item => {\n  const fullName = item.json.name || '';\n  const fileName = item.json.Judul_pub.replace(/\\.[^/.]+$/, '');\n  const JudulLengkap = item.json.Judul_pub.replace(/\\.[^/.]+$/, '');\n\n  // regex fleksibel: cari akhir dengan spasi, underscore, titik, atau dash + 4 digit tahun\n  const match = fileName.match(/^(.*?)[\\s._-]+(\\d{4})$/);\n\n  let judul = fileName;\n  let tahun = null;\n\n  if (match) {\n    judul = match[1].trim();\n    tahun = match[2];\n  }\n\n  return {\n    json: {\n      originalName: fullName,\n      JudulLengkap,\n      judul,\n      tahun,\n      Link_pub: item.json.Link_pub || item.json.alternateLink || null\n    }\n  };\n});\n"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        1248,
+        -704
+      ],
+      "id": "a8ead794-40b8-446c-8731-99d26f41bbb6",
+      "name": "Code2"
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "4eace691-817f-49a3-a8ec-6863e0994df4",
+              "name": "Judul Publikasi",
+              "value": "={{ $json.JudulLengkap }}",
+              "type": "string"
+            },
+            {
+              "id": "3da2dca5-ed9f-47df-9984-e7e663b14c63",
+              "name": "Tahun",
+              "value": "={{ $json.tahun }}",
+              "type": "string"
+            },
+            {
+              "id": "6b76c4ef-cd2c-482f-8477-9818be0670af",
+              "name": "Link_pub",
+              "value": "={{ $json.Link_pub }}",
+              "type": "string"
+            }
+          ]
+        },
+        "options": {
+          "dotNotation": true
+        }
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        1472,
+        -704
+      ],
+      "id": "aa2e2836-aac0-4af6-8947-2d4bf7a62c25",
+      "name": "edit_link1"
+    },
+    {
+      "parameters": {
+        "content": "## Mengambil data dengan API BPS\nMengambil data judul publikasi, tahun, dan link",
+        "height": 300,
+        "width": 600
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "position": [
+        -64,
+        -816
+      ],
+      "typeVersion": 1,
+      "id": "5525df78-36eb-4130-a5ae-6ba5ec5b9386",
+      "name": "Sticky Note6"
+    },
+    {
+      "parameters": {
+        "content": "## Olah Data\nMerubah data agar dapat disusun\n",
+        "height": 300,
+        "width": 300,
+        "color": 4
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "position": [
+        544,
+        -816
+      ],
+      "typeVersion": 1,
+      "id": "773f0ec7-654d-40e9-bcb1-f68f890b80e5",
+      "name": "Sticky Note7"
+    },
+    {
+      "parameters": {
+        "content": "## Filter Data\nMemilih informasi yang akan ditampilkan\n",
+        "height": 300,
+        "width": 300,
+        "color": 6
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "position": [
+        848,
+        -816
+      ],
+      "typeVersion": 1,
+      "id": "862c736f-b993-4428-9138-bc29387c26be",
+      "name": "Sticky Note8"
+    },
+    {
+      "parameters": {
+        "content": "## Merapikan Informasi\nSecara otomatis membagi judul dengan tahun\n",
+        "height": 300,
+        "width": 280,
+        "color": 2
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "position": [
+        1152,
+        -816
+      ],
+      "typeVersion": 1,
+      "id": "8192cc67-6344-40d3-8dd5-70f89671d955",
+      "name": "Sticky Note9"
+    },
+    {
+      "parameters": {
+        "content": "## Mencatat ke Spreadsheet\nSecara otomatis mencatat setiap informasi ke Google Sheet\n",
+        "height": 300,
+        "width": 480,
+        "color": 4
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "position": [
+        1424,
+        -816
+      ],
+      "typeVersion": 1,
+      "id": "bbe65483-02f0-49e2-b987-f2c0bc2e28df",
+      "name": "Sticky Note10"
+    },
+    {
+      "parameters": {
+        "documentId": {
+          "__rl": true,
+          "value": "1JgdsBpkYxzSkogywY51Zxkwho_5hfYJ88-UHo5tgBIU",
+          "mode": "list",
+          "cachedResultName": "Database Bot Laya",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1JgdsBpkYxzSkogywY51Zxkwho_5hfYJ88-UHo5tgBIU/edit?usp=drivesdk"
+        },
+        "sheetName": {
+          "__rl": true,
+          "value": 365480708,
+          "mode": "list",
+          "cachedResultName": "Publikasi",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1JgdsBpkYxzSkogywY51Zxkwho_5hfYJ88-UHo5tgBIU/edit#gid=365480708"
+        },
+        "combineFilters": "OR",
+        "options": {
+          "dataLocationOnSheet": {
+            "values": {
+              "rangeDefinition": "detectAutomatically"
+            }
+          }
+        }
+      },
+      "type": "n8n-nodes-base.googleSheetsTool",
+      "typeVersion": 4.6,
+      "position": [
+        736,
+        272
+      ],
+      "id": "16693b91-ddda-4849-bf1e-3f2391581d02",
+      "name": "Publikasi",
+      "credentials": {
+        "googleSheetsOAuth2Api": {
+          "id": "GdieftyHuO99v4zi",
+          "name": "Google Sheets account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "documentId": {
+          "__rl": true,
+          "value": "1JgdsBpkYxzSkogywY51Zxkwho_5hfYJ88-UHo5tgBIU",
+          "mode": "list",
+          "cachedResultName": "Database Bot Laya",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1JgdsBpkYxzSkogywY51Zxkwho_5hfYJ88-UHo5tgBIU/edit?usp=drivesdk"
+        },
+        "sheetName": {
+          "__rl": true,
+          "value": 1470494511,
+          "mode": "list",
+          "cachedResultName": "Data Strategis",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1JgdsBpkYxzSkogywY51Zxkwho_5hfYJ88-UHo5tgBIU/edit#gid=1470494511"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.googleSheetsTool",
+      "typeVersion": 4.7,
+      "position": [
+        848,
+        272
+      ],
+      "id": "a83eabe1-d7e1-43d1-be3f-33a91debf56d",
+      "name": "Data Strategis",
+      "credentials": {
+        "googleSheetsOAuth2Api": {
+          "id": "GdieftyHuO99v4zi",
+          "name": "Google Sheets account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "content": "## Konsultasi\nPengguna layanan konsultasi dapat mendaftarkan diri pada link yang telah dikirimkan oleh Chatbot. Setelah mengirimkan formulir, pengguna akan mendapatkan pesan konfirmasi pelayanan konsultasi melalui pesan Whatsapp yang nantinya akan dikonfirmasi kembali oleh petugas pelayanan",
+        "height": 304,
+        "width": 880
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "position": [
+        64,
+        480
+      ],
+      "typeVersion": 1,
+      "id": "bf5a4c8e-5d0d-426f-b046-4f83d631e861",
+      "name": "Sticky Note11"
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "https://api.fonnte.com/send",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "Authorization",
+              "value": "fgvNmnSr2BQWypTW56F5"
+            }
+          ]
+        },
+        "sendBody": true,
+        "bodyParameters": {
+          "parameters": [
+            {
+              "name": "Message",
+              "value": "={{ $json.pesankonfirmasi }}"
+            },
+            {
+              "name": "Target",
+              "value": "={{ $json.NomorWA }}"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        1040,
+        608
+      ],
+      "id": "eb1bc8d1-d83d-4f9c-bcd2-26cd8fdab2fb",
+      "name": "Kirim Konfirmasi"
+    },
+    {
+      "parameters": {
+        "operation": "append",
+        "documentId": {
+          "__rl": true,
+          "value": "1ZcIuX-15qvUwgi0IaQsJSEvTZeq5xTPFA8eSWFWwxbw",
+          "mode": "list",
+          "cachedResultName": "Layanan Konsultasi BPS Kabupaten Kepulauan Selayar (Responses)",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1ZcIuX-15qvUwgi0IaQsJSEvTZeq5xTPFA8eSWFWwxbw/edit?usp=drivesdk"
+        },
+        "sheetName": {
+          "__rl": true,
+          "value": 1032544760,
+          "mode": "list",
+          "cachedResultName": "Pencatatan Pengguna Layanan",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1ZcIuX-15qvUwgi0IaQsJSEvTZeq5xTPFA8eSWFWwxbw/edit#gid=1032544760"
+        },
+        "columns": {
+          "mappingMode": "defineBelow",
+          "value": {
+            "Nama": "={{ $json.Nama }}",
+            "Email": "={{ $json['Email aktif'] }}",
+            "Jenis Layanan": "={{ $json['Jenis Layanan'] }}",
+            "Tanggal Layanan": "={{ $json['Tanggal Layanan'] }}",
+            "Sesi Layanan": "={{ $json['Sesi Layanan'] }}",
+            "Jam Datang": "={{ $json['Jam Kedatangan'] }}",
+            "Nomor WA": "={{ $json['Nomor WA'] }}"
+          },
+          "matchingColumns": [],
+          "schema": [
+            {
+              "id": "Nama",
+              "displayName": "Nama",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "Email",
+              "displayName": "Email",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "Jenis Layanan",
+              "displayName": "Jenis Layanan",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "Tanggal Layanan",
+              "displayName": "Tanggal Layanan",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "Sesi Layanan",
+              "displayName": "Sesi Layanan",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "Jam Datang",
+              "displayName": "Jam Datang",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "Nomor WA",
+              "displayName": "Nomor WA",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            }
+          ],
+          "attemptToConvertTypes": false,
+          "convertFieldsToString": false
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.googleSheets",
+      "typeVersion": 4.7,
+      "position": [
+        640,
+        880
+      ],
+      "id": "1f966310-61de-411f-bbea-dd18eebc96e9",
+      "name": "Pencatatan",
+      "credentials": {
+        "googleSheetsOAuth2Api": {
+          "id": "GdieftyHuO99v4zi",
+          "name": "Google Sheets account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "jsCode": "return [\n  {\n    json: {\n      NomorWA:$input.first().json['Nomor WA'],\n      pesankonfirmasi: `✅ Konfirmasi Layanan Konsultasi Anda:\\n` +\n                        '\\n'+\n                       `Nama: ${$json[\"Nama\"]}\\n` +\n                       `Jenis Layanan: ${$json[\"Jenis Layanan\"]}\\n` +\n                       `Tanggal Layanan: ${$json[\"Tanggal Layanan\"]}\\n` +\n                       `Sesi Layanan: ${$json[\"Sesi Layanan\"]}\\n` +\n                       `Jam Datang: ${$json[\"Jam Kedatangan\"]}\\n`+\n        '\\n'+\n        'Silakan datang sesuai dengan jam datang yang telah ditentukan'\n    }\n  }\n];\n"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        704,
+        608
+      ],
+      "id": "e51d381f-1fe1-4a16-90eb-ff68dabf802a",
+      "name": "Pesan Konfirmasi"
+    },
+    {
+      "parameters": {
+        "pollTimes": {
+          "item": [
+            {
+              "mode": "everyX",
+              "value": 1,
+              "unit": "minutes"
+            }
+          ]
+        },
+        "documentId": {
+          "__rl": true,
+          "value": "1ZcIuX-15qvUwgi0IaQsJSEvTZeq5xTPFA8eSWFWwxbw",
+          "mode": "list",
+          "cachedResultName": "Layanan Konsultasi BPS Kabupaten Kepulauan Selayar (Responses)",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1ZcIuX-15qvUwgi0IaQsJSEvTZeq5xTPFA8eSWFWwxbw/edit?usp=drivesdk"
+        },
+        "sheetName": {
+          "__rl": true,
+          "value": 1208948934,
+          "mode": "list",
+          "cachedResultName": "Form Responses 1",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1ZcIuX-15qvUwgi0IaQsJSEvTZeq5xTPFA8eSWFWwxbw/edit#gid=1208948934"
+        },
+        "event": "rowAdded",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.googleSheetsTrigger",
+      "typeVersion": 1,
+      "position": [
+        176,
+        608
+      ],
+      "id": "98b5d12f-8fed-43d0-a3c5-3d042d8cf0e7",
+      "name": "Mendapatkan baris respon",
+      "credentials": {
+        "googleSheetsTriggerOAuth2Api": {
+          "id": "KhmXnGxlAuaJ7yig",
+          "name": "Google Sheets Trigger account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "jsCode": "\nfunction normTanggal(t) {\n  if (!t) return \"\";\n  // Ubah ke format YYYY-MM-DD\n  const d = new Date(t);\n  if (isNaN(d)) return t.trim(); // kalau gagal parse, pakai string mentah\n  return d.toISOString().split(\"T\")[0];\n}\n\nfunction normSesi(s) {\n  return (s || \"\").trim().toLowerCase();\n}\n\n// Ambil data dari Google Sheet\nconst rows = items.map(item => item.json);\n\n// Data booking baru\nconst newBooking = {\n  nama: $json.Nama,\n  email: $json['Email aktif'],\n  nomorWA: $json['Nomor WA '],\n  jenisLayanan: $json['Jenis Layanan'],\n  tanggal: ($json['Tanggal Layanan'] || \"\").trim(),\n  sesi: ($json['Sesi Layanan'] || \"\").trim().toLowerCase()\n};\n\nconst existing = rows.filter(row => {\n  return normTanggal(row[\"Tanggal Layanan\"]) === normTanggal(newBooking.tanggal) &&\n         normSesi(row[\"Sesi Layanan\"]) === normSesi(newBooking.sesi);\n});\n\n// Jam default per sesi\nconst jamSesi = {\n  \"pagi\": 8,\n  \"siang\": 12\n};\n\n// Hitung jam booking\nlet jamMulai = jamSesi[newBooking.sesi] ?? 8; // default pagi\nlet jamBooking = jamMulai + existing.length;\n\n// Format jam ke string\nconst jamBookingStr = (jamBooking < 10 ? \"0\" : \"\") + jamBooking + \":00\";\n\n// Hasil akhir\nconst result = {\n  Nama: newBooking.nama,\n  \"Email aktif\": newBooking.email,\n  \"Nomor WA\": newBooking.nomorWA,\n  \"Jenis Layanan\": newBooking.jenisLayanan,\n  \"Tanggal Layanan\": newBooking.tanggal,\n  \"Sesi Layanan\": newBooking.sesi,\n  \"Jam Kedatangan\": jamBookingStr\n};\n\nreturn [{ json: result }];\nconsole.log(\"=== DEBUG BOOKING ===\");\nconsole.log(\"newBooking:\", newBooking);\nconsole.log(\"rows sample:\", rows.slice(0,3)); // cek 3 data pertama\n"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        352,
+        608
+      ],
+      "id": "8f78f125-d285-4865-aeb3-6a3282764d62",
+      "name": "Hitung jam datang booking"
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "b89827f6-502e-4c2c-bb6a-dd6a0d389510",
+              "name": "Nama",
+              "value": "={{ $json.Nama }}",
+              "type": "string"
+            },
+            {
+              "id": "b9d9e1ad-4e9a-450e-9a0d-fc3b19ef865c",
+              "name": "Email aktif",
+              "value": "={{ $json['Email aktif'] }}",
+              "type": "string"
+            },
+            {
+              "id": "65eafd28-1290-42a6-8a3d-89131a7b80b9",
+              "name": "Jenis Layanan",
+              "value": "={{ $json['Jenis Layanan'] }}",
+              "type": "string"
+            },
+            {
+              "id": "791d3ee9-8d63-4047-907d-0a544829d608",
+              "name": "Tanggal Layanan",
+              "value": "={{ $json['Tanggal Layanan'] }}",
+              "type": "string"
+            },
+            {
+              "id": "89b1d2da-8d11-426f-ab81-2c07dcd511bc",
+              "name": "Sesi Layanan",
+              "value": "={{ $json['Sesi Layanan'] }}",
+              "type": "string"
+            },
+            {
+              "id": "6fcdc394-f864-462b-9892-70b9e43c7875",
+              "name": "Jam Kedatangan",
+              "value": "={{ $json['Jam Kedatangan'] }}",
+              "type": "string"
+            },
+            {
+              "id": "39d31832-0c3d-4e38-a98e-c98627ef2380",
+              "name": "Nomor WA",
+              "value": "={{ $json['Nomor WA'] }}",
+              "type": "string"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        528,
+        608
+      ],
+      "id": "52556de6-2380-4b64-967a-2598663a2430",
+      "name": "Merapikan data"
+    },
+    {
+      "parameters": {
+        "content": "\n**Mencatat pada database**",
+        "height": 192,
+        "width": 304,
+        "color": 4
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "position": [
+        528,
+        816
+      ],
+      "typeVersion": 1,
+      "id": "e62f6123-a60a-4070-b07a-e0482eac6774",
+      "name": "Sticky Note12"
+    },
+    {
+      "parameters": {
+        "sendTo": "aronad.maheswara@gmail.com",
+        "subject": "Layanan Konsultasi Statistik",
+        "emailType": "text",
+        "message": "=Layanan Konsultasi Statistik\nInformasi Pengguna Layanan\n\n* Nama : {{ $json.Nama }}\n* Email : {{ $json['Email aktif'] }}\n* Nomor Whatsapp : {{ $json['Nomor WA'] }}\n* Jenis Layanan : {{ $json['Jenis Layanan'] }}\n* Tanggal : {{ $json['Tanggal Layanan'] }}\n* Sesi : {{ $json['Sesi Layanan'] }}\n* Jam Mulai : {{ $json['Jam Kedatangan'] }}\n\nnb.\nUntuk konsultasi online silakan melakukan konfirmasi ulang satu jam sebelum jam mulai kepada pengguna layanan.",
+        "options": {
+          "senderName": "IPDS Selayar"
+        }
+      },
+      "type": "n8n-nodes-base.gmail",
+      "typeVersion": 2.1,
+      "position": [
+        1056,
+        864
+      ],
+      "id": "d2a14b50-6457-4d19-a2fb-9a39baf19e92",
+      "name": "Send a message",
+      "webhookId": "878cf5ab-c39f-477f-a95d-ba4eb1fabc50",
+      "credentials": {
+        "gmailOAuth2": {
+          "id": "6TuuvIFbJSHVBUQB",
+          "name": "Gmail account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "content": "## Kirim ke petugas",
+        "height": 224,
+        "width": 304,
+        "color": 5
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "position": [
+        960,
+        784
+      ],
+      "typeVersion": 1,
+      "id": "3f82f459-bcbd-46c4-bbc4-9aecb9145f59",
+      "name": "Sticky Note13"
+    },
+    {
+      "parameters": {
+        "content": "## Kirim ke pengguna",
+        "height": 272,
+        "width": 288,
+        "color": 3
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "position": [
+        960,
+        496
+      ],
+      "typeVersion": 1,
+      "id": "45b4d3ff-b902-4359-979c-49884b143750",
+      "name": "Sticky Note14"
+    },
+    {
+      "parameters": {
+        "url": "https://webapi.bps.go.id/v1/api/view/domain/7301/model/publication/lang/ind/id/14a6af62c74fb8b62a56f6ac/key/f4e967cd01122dd9369e555c52075c83/",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        80,
+        -1040
+      ],
+      "id": "e19d1ae5-d985-4c37-a537-ea4dea67a623",
+      "name": "HTTP Request3"
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "e779f924-18fe-40d3-8eaf-24940a594bcd",
+              "name": "Judul_pub",
+              "value": "={{ $json.title}}",
+              "type": "string"
+            },
+            {
+              "id": "f12bffa1-3f70-4332-9383-ea51316af715",
+              "name": "Link_pub",
+              "value": "={{ $json.url }}",
+              "type": "string"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        672,
+        -1040
+      ],
+      "id": "bed54793-b655-412c-bced-707f957418c3",
+      "name": "Edit Fields2"
+    },
+    {
+      "parameters": {
+        "jsCode": "const response = items[0].json;\n\n// Ambil langsung array related\nconst related = response.data.related || [];\n\n// Map semua related jadi item baru\nreturn related.map(item => ({\n  json: {\n    pub_id: item.pub_id || '-',\n    title: item.title || '-',\n    release_date: item.rl_date || '-',\n    url: item.url || '-',\n    cover: item.cover || '-',\n    pdf: item.pdf || '-'\n  }\n}));\n"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        368,
+        -1040
+      ],
+      "id": "757d765f-3595-4ecc-8304-d2775ee39ef4",
+      "name": "Code3"
+    },
+    {
+      "parameters": {
+        "operation": "append",
+        "documentId": {
+          "__rl": true,
+          "value": "1JgdsBpkYxzSkogywY51Zxkwho_5hfYJ88-UHo5tgBIU",
+          "mode": "list",
+          "cachedResultName": "Database Bot Laya",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1JgdsBpkYxzSkogywY51Zxkwho_5hfYJ88-UHo5tgBIU/edit?usp=drivesdk"
+        },
+        "sheetName": {
+          "__rl": true,
+          "value": 556923788,
+          "mode": "list",
+          "cachedResultName": "Pub",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1JgdsBpkYxzSkogywY51Zxkwho_5hfYJ88-UHo5tgBIU/edit#gid=556923788"
+        },
+        "columns": {
+          "mappingMode": "defineBelow",
+          "value": {
+            "Judul Publikasi": "={{ $json['Judul Publikasi'] }}",
+            "Tahun": "={{ $json.Tahun }}",
+            "Link Publikasi": "={{ $json.Link_pub }}"
+          },
+          "matchingColumns": [],
+          "schema": [
+            {
+              "id": "Judul Publikasi",
+              "displayName": "Judul Publikasi",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "Tahun",
+              "displayName": "Tahun",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "Link Publikasi",
+              "displayName": "Link Publikasi",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            }
+          ],
+          "attemptToConvertTypes": false,
+          "convertFieldsToString": false
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.googleSheets",
+      "typeVersion": 4.5,
+      "position": [
+        1488,
+        -1040
+      ],
+      "id": "30d516a7-608b-4998-8631-ec210d67cc90",
+      "name": "Append row in sheet2",
+      "credentials": {
+        "googleSheetsOAuth2Api": {
+          "id": "GdieftyHuO99v4zi",
+          "name": "Google Sheets account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "jsCode": "return items.map(item => {\n  const fullName = item.json.name || '';\n  const fileName = item.json.Judul_pub.replace(/\\.[^/.]+$/, '');\n  const JudulLengkap = item.json.Judul_pub.replace(/\\.[^/.]+$/, '');\n\n  // regex fleksibel: cari akhir dengan spasi, underscore, titik, atau dash + 4 digit tahun\n  const match = fileName.match(/^(.*?)[\\s._-]+(\\d{4})$/);\n\n  let judul = fileName;\n  let tahun = null;\n\n  if (match) {\n    judul = match[1].trim();\n    tahun = match[2];\n  }\n\n  return {\n    json: {\n      originalName: fullName,\n      JudulLengkap,\n      judul,\n      tahun,\n      Link_pub: item.json.Link_pub || item.json.alternateLink || null\n    }\n  };\n});\n"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        960,
+        -1040
+      ],
+      "id": "60512bfd-c6b6-4afb-91b6-143859214fcf",
+      "name": "Code4"
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "4eace691-817f-49a3-a8ec-6863e0994df4",
+              "name": "Judul Publikasi",
+              "value": "={{ $json.JudulLengkap }}",
+              "type": "string"
+            },
+            {
+              "id": "3da2dca5-ed9f-47df-9984-e7e663b14c63",
+              "name": "Tahun",
+              "value": "={{ $json.tahun }}",
+              "type": "string"
+            },
+            {
+              "id": "6b76c4ef-cd2c-482f-8477-9818be0670af",
+              "name": "Link_pub",
+              "value": "={{ $json.Link_pub }}",
+              "type": "string"
+            }
+          ]
+        },
+        "options": {
+          "dotNotation": true
+        }
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        1184,
+        -1040
+      ],
+      "id": "74b93691-dc59-4ca1-a7f3-94ea1210e536",
+      "name": "edit_link2"
+    },
+    {
+      "parameters": {
+        "content": "## Scrapping WebAPI BPS \nScraping dilakukan dengan menggunakan id publikasi yang ada pada web BPS. [Guide](https://docs.n8n.io/workflows/sticky-notes/)",
+        "height": 320,
+        "width": 1792
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "position": [
+        -64,
+        -1168
+      ],
+      "typeVersion": 1,
+      "id": "96a15a72-992f-41db-b13f-86615d575c13",
+      "name": "Sticky Note16"
+    },
+    {
+      "parameters": {
+        "content": "## Gemini AI\nAI model pada \nlayanan chatbot",
+        "height": 192,
+        "width": 272,
+        "color": 6
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "position": [
+        48,
+        208
+      ],
+      "typeVersion": 1,
+      "id": "5153831c-8e96-438c-a392-e3eceae5ac4d",
+      "name": "Sticky Note15"
+    }
+  ],
+  "pinData": {},
+  "connections": {
+    "Google Gemini Chat Model": {
+      "ai_languageModel": [
+        [
+          {
+            "node": "Agent",
+            "type": "ai_languageModel",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Simple Memory": {
+      "ai_memory": [
+        [
+          {
+            "node": "Agent",
+            "type": "ai_memory",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Think": {
+      "ai_tool": [
+        [
+          {
+            "node": "Agent",
+            "type": "ai_tool",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "SerpAPI": {
+      "ai_tool": [
+        [
+          {
+            "node": "Agent",
+            "type": "ai_tool",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "sumber data": {
+      "ai_tool": [
+        [
+          {
+            "node": "Agent",
+            "type": "ai_tool",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Agent": {
+      "main": [
+        [
+          {
+            "node": "HTTP Request1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Profil BPS": {
+      "ai_tool": [
+        [
+          {
+            "node": "Agent",
+            "type": "ai_tool",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Webhook": {
+      "main": [
+        [
+          {
+            "node": "Agent",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Google Drive Trigger": {
+      "main": [
+        [
+          {
+            "node": "Code",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "edit_link": {
+      "main": [
+        [
+          {
+            "node": "Append row in sheet",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Code": {
+      "main": [
+        [
+          {
+            "node": "edit_link",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Append row in sheet": {
+      "main": [
+        []
+      ]
+    },
+    "HTTP Request2": {
+      "main": [
+        [
+          {
+            "node": "Code1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Edit Fields1": {
+      "main": [
+        [
+          {
+            "node": "Code2",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "When clicking ‘Execute workflow’": {
+      "main": [
+        [
+          {
+            "node": "HTTP Request2",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Code1": {
+      "main": [
+        [
+          {
+            "node": "Edit Fields1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Code2": {
+      "main": [
+        [
+          {
+            "node": "edit_link1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "edit_link1": {
+      "main": [
+        [
+          {
+            "node": "Append row in sheet1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Publikasi": {
+      "ai_tool": [
+        [
+          {
+            "node": "Agent",
+            "type": "ai_tool",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Data Strategis": {
+      "ai_tool": [
+        [
+          {
+            "node": "Agent",
+            "type": "ai_tool",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Kirim Konfirmasi": {
+      "main": [
+        []
+      ]
+    },
+    "Pesan Konfirmasi": {
+      "main": [
+        [
+          {
+            "node": "Kirim Konfirmasi",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Mendapatkan baris respon": {
+      "main": [
+        [
+          {
+            "node": "Hitung jam datang booking",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Hitung jam datang booking": {
+      "main": [
+        [
+          {
+            "node": "Merapikan data",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Merapikan data": {
+      "main": [
+        [
+          {
+            "node": "Pesan Konfirmasi",
+            "type": "main",
+            "index": 0
+          },
+          {
+            "node": "Pencatatan",
+            "type": "main",
+            "index": 0
+          },
+          {
+            "node": "Send a message",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Send a message": {
+      "main": [
+        []
+      ]
+    },
+    "HTTP Request3": {
+      "main": [
+        [
+          {
+            "node": "Code3",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Edit Fields2": {
+      "main": [
+        [
+          {
+            "node": "Code4",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Code3": {
+      "main": [
+        [
+          {
+            "node": "Edit Fields2",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Code4": {
+      "main": [
+        [
+          {
+            "node": "edit_link2",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "edit_link2": {
+      "main": [
+        [
+          {
+            "node": "Append row in sheet2",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "active": true,
+  "settings": {
+    "executionOrder": "v1",
+    "callerPolicy": "workflowsFromSameOwner"
+  },
+  "versionId": "7bcd4a59-5f28-4fc9-bcb5-27eacb29b63f",
+  "meta": {
+    "templateCredsSetupCompleted": true,
+    "instanceId": "805d76a5a0dfbaf1f21de894fa42462268a5a19856d64e2bcfa697888606a1e3"
+  },
+  "id": "7NOHf5XrUr7nbgYX",
+  "tags": [
+    {
+      "createdAt": "2025-07-02T07:16:15.849Z",
+      "updatedAt": "2025-07-02T07:16:15.849Z",
+      "id": "mawrhWgVnPdLBgJw",
+      "name": "ChatBot Laya"
+    }
+  ]
+}
